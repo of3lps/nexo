@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  body {
+    @apply bg-white text-nexo-navy font-sans;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white border border-nexo-lightGray shadow-xl;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-nexo-orange to-nexo-navy bg-clip-text text-transparent;
+  }
+  
+  .btn-primary {
+    @apply bg-nexo-orange hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent hover:bg-nexo-navy text-nexo-navy hover:text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 border-2 border-nexo-navy;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
