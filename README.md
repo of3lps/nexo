@@ -1,5 +1,7 @@
 # Nexo - Community Platform
 
+**Desenvolvido por Ana Flávia Almeida Matias e Luiz Felipe Almeida Matias**
+
 Uma plataforma de comunidades construída com Next.js, Prisma e Supabase.
 
 ## Tecnologias
