@@ -55,8 +55,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(channels)
   } catch (error) {
-    console.error('Error in GET /api/channels:', error)
-    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 })
+    console.error('Error fetching channels:', error)
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
 
@@ -69,7 +69,8 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    console.log('Creating channel with data:', body)
+    // Log sanitizado para auditoria
+    console.log('Creating channel for community:', communityId)
     const { name, description, communityId, isPrivate, memberIds } = body
 
     if (!name || !communityId) {
@@ -107,10 +108,10 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    console.log('Channel created:', channel)
+    console.log('Channel created with ID:', channel.id)
     return NextResponse.json(channel, { status: 201 })
   } catch (error) {
-    console.error('Error in POST /api/channels:', error)
-    return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 })
+    console.error('Channel creation error:', error)
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

@@ -68,24 +68,24 @@ export default function AnalyticsPage() {
   ]
 
   const eventParticipation = [
-    { name: 'React Workshop', rsvp: 45, attended: 38, rate: 84 },
+    { name: 'Workshop A', rsvp: 45, attended: 38, rate: 84 },
     { name: 'Community Meetup', rsvp: 78, attended: 65, rate: 83 },
-    { name: 'Next.js Launch', rsvp: 156, attended: 142, rate: 91 },
+    { name: 'Framework Launch', rsvp: 156, attended: 142, rate: 91 },
     { name: 'Design Workshop', rsvp: 30, attended: 22, rate: 73 }
   ]
 
   const topPosts = [
     {
-      title: 'React Workshop announcement',
-      author: 'Sarah Chen',
+      title: 'Workshop announcement',
+      author: 'Community Admin',
       reactions: 45,
       comments: 23,
       views: 234,
       engagement: 92
     },
     {
-      title: 'Next.js 14 performance tips',
-      author: 'Mike Rodriguez',
+      title: 'Framework performance tips',
+      author: 'Community Admin',
       reactions: 38,
       comments: 19,
       views: 189,
@@ -93,7 +93,7 @@ export default function AnalyticsPage() {
     },
     {
       title: 'Design system best practices',
-      author: 'Alex Kim',
+      author: 'Community Admin',
       reactions: 31,
       comments: 15,
       views: 156,
@@ -102,10 +102,10 @@ export default function AnalyticsPage() {
   ]
 
   const activeMembers = [
-    { name: 'Sarah Chen', posts: 23, reactions: 145, score: 168 },
-    { name: 'Mike Rodriguez', posts: 19, reactions: 98, score: 117 },
-    { name: 'Alex Kim', posts: 15, reactions: 87, score: 102 },
-    { name: 'Jessica Silva', posts: 12, reactions: 76, score: 88 }
+    { name: 'Member A', posts: 23, reactions: 145, score: 168 },
+    { name: 'Member B', posts: 19, reactions: 98, score: 117 },
+    { name: 'Member C', posts: 15, reactions: 87, score: 102 },
+    { name: 'Member D', posts: 12, reactions: 76, score: 88 }
   ]
 
   const insights = [

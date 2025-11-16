@@ -7,16 +7,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  domain    String?  @unique
+  plan      Plan     @default(FREE)
+  status    TenantStatus @default(TRIAL)
+  trialEndsAt DateTime?
+  customerId String? // AbacatePay customer ID
+  subscriptionId String? // AbacatePay subscription ID
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       User[]
+  communities Community[]
+
+  @@map("tenants")
+}
+
 model User {
   id        String   @id @default(cuid())
-  email     String   @unique
+  email     String
   name      String?
   password  String?
   avatar    String?
   role      UserRole @default(MEMBER)
+  tenantId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  tenant          Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   communities     CommunityMember[]
   posts          Post[]
   comments       Comment[]
@@ -25,6 +46,7 @@ model User {
   eventAttendees EventAttendee[]
   channelMembers ChannelMember[]
 
+  @@unique([email, tenantId])
   @@map("users")
 }
 
@@ -32,18 +54,21 @@ model Community {
   id          String   @id @default(cuid())
   name        String
   description String?
-  slug        String   @unique
+  slug        String
   logo        String?
   primaryColor String  @default("#FF6B35")
   secondaryColor String @default("#1E2A38")
   isPublic    Boolean  @default(true)
+  tenantId    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   members  CommunityMember[]
   channels Channel[]
   events   Event[]
 
+  @@unique([slug, tenantId])
   @@map("communities")
 }
 
@@ -143,6 +168,7 @@ model Event {
   location    String?
   maxAttendees Int?
   price       String?
+  registrationForm Json? @default("[]")
   organizerId String
   communityId String
   createdAt   DateTime  @default(now())
@@ -160,6 +186,7 @@ model EventAttendee {
   userId  String
   eventId String
   status  AttendeeStatus   @default(REGISTERED)
+  formData Json?           @default("{}")
   rsvpAt  DateTime         @default(now())
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -170,8 +197,25 @@ model EventAttendee {
 }
 
 enum UserRole {
+  SUPER_ADMIN
+  TENANT_ADMIN
   ADMIN
   MEMBER
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  ENTERPRISE
+}
+
+enum TenantStatus {
+  TRIAL
+  ACTIVE
+  SUSPENDED
+  CANCELLED
+  PAYMENT_FAILED
 }
 
 enum MemberRole {

@@ -116,7 +116,7 @@ export default function CreateCommunity() {
                 Community URL
               </label>
               <div className="flex items-center">
-                <span className="text-nexo-mediumGray text-sm mr-2">nexo.com/</span>
+                <span className="text-nexo-mediumGray text-sm mr-2">{process.env.NEXT_PUBLIC_DOMAIN || 'nexo.com'}/</span>
                 <input 
                   type="text" 
                   value={formData.slug}

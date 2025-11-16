@@ -78,7 +78,7 @@ export default function LandingPage() {
             <div className="w-10 h-10 bg-gradient-to-br from-nexo-orange to-nexo-navy rounded-xl flex items-center justify-center">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold gradient-text">Nexo</span>
+            <span className="text-2xl font-bold gradient-text">{process.env.NEXT_PUBLIC_APP_NAME || 'Nexo'}</span>
           </div>
           
           <div className="flex items-center space-x-4">
@@ -117,12 +117,12 @@ export default function LandingPage() {
             </p>
             
             <div className="flex items-center justify-center space-x-4">
-              <button 
-                onClick={() => setIsLogin(false)}
-                className="btn-primary text-lg px-8 py-4"
+              <a 
+                href="/onboarding"
+                className="btn-primary text-lg px-8 py-4 inline-flex items-center"
               >
                 Start Building <ArrowRight className="w-5 h-5 ml-2" />
-              </button>
+              </a>
               <button className="btn-secondary text-lg px-8 py-4">
                 Watch Demo
               </button>

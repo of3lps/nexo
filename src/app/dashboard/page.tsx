@@ -38,7 +38,7 @@ export default function Dashboard() {
   const stats = [
     {
       label: 'Total Members',
-      value: '1,247',
+      value: communities.reduce((acc, c: any) => acc + (c._count?.members || 0), 0).toString(),
       change: '+12%',
       trend: 'up',
       icon: Users,
@@ -46,15 +46,15 @@ export default function Dashboard() {
     },
     {
       label: 'Active Events',
-      value: '23',
+      value: communities.reduce((acc, c: any) => acc + (c._count?.events || 0), 0).toString(),
       change: '+5%',
       trend: 'up',
       icon: Calendar,
       color: 'from-purple-500 to-purple-600'
     },
     {
-      label: 'Monthly Revenue',
-      value: '$4,892',
+      label: 'Communities',
+      value: communities.length.toString(),
       change: '+18%',
       trend: 'up',
       icon: DollarSign,
@@ -73,33 +73,27 @@ export default function Dashboard() {
   const recentActivity = [
     {
       type: 'member',
-      message: 'Sarah Johnson joined the community',
+      message: 'New member joined the community',
       time: '2 minutes ago',
-      avatar: '👩‍💻'
+      avatar: '👩💻'
     },
     {
       type: 'event',
-      message: 'New event "React Workshop" was created',
+      message: 'New event was created',
       time: '15 minutes ago',
       avatar: '📅'
     },
     {
       type: 'post',
-      message: 'Mike Chen posted in General Discussion',
+      message: 'New post in General Discussion',
       time: '1 hour ago',
-      avatar: '👨‍💼'
-    },
-    {
-      type: 'revenue',
-      message: 'New subscription: Premium Plan',
-      time: '2 hours ago',
-      avatar: '💰'
+      avatar: '👨💼'
     }
   ]
 
   const upcomingEvents = [
     {
-      title: 'React Workshop',
+      title: 'Workshop',
       date: 'Tomorrow, 2:00 PM',
       attendees: 45,
       status: 'confirmed'
@@ -109,12 +103,6 @@ export default function Dashboard() {
       date: 'Friday, 6:00 PM',
       attendees: 78,
       status: 'confirmed'
-    },
-    {
-      title: 'Tech Talk Series',
-      date: 'Next Monday, 7:00 PM',
-      attendees: 23,
-      status: 'pending'
     }
   ]
 

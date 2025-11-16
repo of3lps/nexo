@@ -54,7 +54,7 @@ export default function MarketingPage() {
       id: 1,
       name: 'General Invite',
       code: 'TECH2024',
-      url: 'nexo.com/join/TECH2024',
+      url: `${process.env.NEXT_PUBLIC_DOMAIN || 'nexo.com'}/join/TECH2024`,
       uses: 45,
       maxUses: 100,
       expires: '2024-02-15'
@@ -63,7 +63,7 @@ export default function MarketingPage() {
       id: 2,
       name: 'Workshop Attendees',
       code: 'WORKSHOP',
-      url: 'nexo.com/join/WORKSHOP',
+      url: `${process.env.NEXT_PUBLIC_DOMAIN || 'nexo.com'}/join/WORKSHOP`,
       uses: 23,
       maxUses: 50,
       expires: '2024-01-30'
@@ -72,7 +72,7 @@ export default function MarketingPage() {
       id: 3,
       name: 'VIP Members',
       code: 'VIP2024',
-      url: 'nexo.com/join/VIP2024',
+      url: `${process.env.NEXT_PUBLIC_DOMAIN || 'nexo.com'}/join/VIP2024`,
       uses: 12,
       maxUses: 25,
       expires: '2024-03-01'
@@ -201,14 +201,14 @@ export default function MarketingPage() {
           {/* Campaigns Tab */}
           {activeTab === 'campaigns' && (
             <div className="space-y-6">
-              {/* Campaign Stats */}
+              {/* Campaign Stats - Em produção, estes dados viriam de APIs */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="bg-white rounded-xl border border-nexo-lightGray p-6">
                   <div className="flex items-center space-x-3 mb-2">
                     <Mail className="w-5 h-5 text-nexo-orange" />
                     <span className="font-semibold text-nexo-navy">Total Sent</span>
                   </div>
-                  <p className="text-2xl font-bold text-nexo-navy">4,154</p>
+                  <p className="text-2xl font-bold text-nexo-navy">{campaigns.reduce((acc, c) => acc + c.sent, 0).toLocaleString()}</p>
                   <p className="text-sm text-nexo-mediumGray">+12% vs last month</p>
                 </div>
                 <div className="bg-white rounded-xl border border-nexo-lightGray p-6">
@@ -216,7 +216,7 @@ export default function MarketingPage() {
                     <Eye className="w-5 h-5 text-nexo-orange" />
                     <span className="font-semibold text-nexo-navy">Open Rate</span>
                   </div>
-                  <p className="text-2xl font-bold text-nexo-navy">68.4%</p>
+                  <p className="text-2xl font-bold text-nexo-navy">{((campaigns.reduce((acc, c) => acc + c.opened, 0) / campaigns.reduce((acc, c) => acc + c.sent, 0)) * 100).toFixed(1)}%</p>
                   <p className="text-sm text-nexo-mediumGray">Above average</p>
                 </div>
                 <div className="bg-white rounded-xl border border-nexo-lightGray p-6">
@@ -224,7 +224,7 @@ export default function MarketingPage() {
                     <MousePointer className="w-5 h-5 text-nexo-orange" />
                     <span className="font-semibold text-nexo-navy">Click Rate</span>
                   </div>
-                  <p className="text-2xl font-bold text-nexo-navy">24.7%</p>
+                  <p className="text-2xl font-bold text-nexo-navy">{((campaigns.reduce((acc, c) => acc + c.clicked, 0) / campaigns.reduce((acc, c) => acc + c.sent, 0)) * 100).toFixed(1)}%</p>
                   <p className="text-sm text-nexo-mediumGray">+3% vs last month</p>
                 </div>
                 <div className="bg-white rounded-xl border border-nexo-lightGray p-6">
@@ -232,8 +232,8 @@ export default function MarketingPage() {
                     <Target className="w-5 h-5 text-nexo-orange" />
                     <span className="font-semibold text-nexo-navy">Conversions</span>
                   </div>
-                  <p className="text-2xl font-bold text-nexo-navy">168</p>
-                  <p className="text-sm text-nexo-mediumGray">4.0% conversion rate</p>
+                  <p className="text-2xl font-bold text-nexo-navy">{campaigns.reduce((acc, c) => acc + c.converted, 0)}</p>
+                  <p className="text-sm text-nexo-mediumGray">{((campaigns.reduce((acc, c) => acc + c.converted, 0) / campaigns.reduce((acc, c) => acc + c.sent, 0)) * 100).toFixed(1)}% conversion rate</p>
                 </div>
               </div>
 

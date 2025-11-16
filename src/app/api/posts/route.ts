@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { sanitizeHtml } from '@/lib/sanitize'
 
 export async function GET(request: NextRequest) {
   try {
@@ -41,14 +42,15 @@ export async function GET(request: NextRequest) {
           }
         }
       },
-      orderBy: [
-        { isPinned: 'desc' },
-        { createdAt: 'desc' }
-      ]
+      orderBy: {
+        createdAt: 'desc'
+      },
+      take: 50
     })
 
     return NextResponse.json(posts)
   } catch (error) {
+    console.error('Error fetching posts:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -67,6 +69,11 @@ export async function POST(request: NextRequest) {
     if ((!content?.trim() && !attachments?.length) || !channelId) {
       return NextResponse.json({ error: 'Content or attachments and channelId are required' }, { status: 400 })
     }
+
+
+
+    // Sanitizar conteúdo
+    const sanitizedContent = content ? sanitizeHtml(content.trim()) : ''
 
     // Verificar se o canal existe e o usuário tem acesso
     const channel = await prisma.channel.findUnique({
@@ -88,7 +95,7 @@ export async function POST(request: NextRequest) {
 
     const post = await prisma.post.create({
       data: {
-        content: content?.trim() || '',
+        content: sanitizedContent,
         channelId,
         authorId: session.user.id,
         attachments: attachments || []

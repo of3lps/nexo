@@ -18,9 +18,18 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        const user = await prisma.user.findUnique({
+        // Get tenant from request headers
+        const tenantSlug = process.env.NODE_ENV === 'development' ? 'demo' : 'default'
+        
+        const user = await prisma.user.findFirst({
           where: {
-            email: credentials.email
+            email: credentials.email,
+            tenant: {
+              slug: tenantSlug
+            }
+          },
+          include: {
+            tenant: true
           }
         })
 
@@ -28,9 +37,13 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
+        if (!user.password) {
+          return null
+        }
+
         const isPasswordValid = await bcrypt.compare(
           credentials.password,
-          user.password || ''
+          user.password
         )
 
         if (!isPasswordValid) {
@@ -42,6 +55,8 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
+          tenantId: user.tenantId,
+          tenantSlug: user.tenant.slug
         }
       }
     })

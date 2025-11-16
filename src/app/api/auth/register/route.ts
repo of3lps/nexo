@@ -7,8 +7,20 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { name, email, password } = body
 
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
+    // Get demo tenant (for now)
+    const tenant = await prisma.tenant.findUnique({
+      where: { slug: 'demo' }
+    })
+
+    if (!tenant) {
+      return NextResponse.json({ error: 'Tenant not found' }, { status: 400 })
+    }
+
+    const existingUser = await prisma.user.findFirst({
+      where: { 
+        email,
+        tenantId: tenant.id
+      }
     })
 
     if (existingUser) {
@@ -21,7 +33,8 @@ export async function POST(request: NextRequest) {
       data: {
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        tenantId: tenant.id
       },
       select: {
         id: true,
